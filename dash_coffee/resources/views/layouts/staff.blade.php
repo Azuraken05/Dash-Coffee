@@ -50,8 +50,8 @@
           <a href="{{ route('staff.menu') }}" class="{{ request()->routeIs('staff.menu') ? 'active' : '' }}">Manage
             Menu</a>
         @endif
-        <a href="{{ route('staff.inventory') }}"
-          class="{{ request()->routeIs('staff.inventory') ? 'active' : '' }}">Inventory</a>
+          <a href="{{ route('staff.inventory') }}"
+          class="{{ request()->routeIs('staff.inventory', 'staff.inv-reports') ? 'active' : '' }}">Inventory</a>
         @if ($owner)
           <a href="{{ route('staff.sales') }}" class="{{ request()->routeIs('staff.sales') ? 'active' : '' }}">Sales
             Report</a>

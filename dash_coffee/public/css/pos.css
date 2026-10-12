@@ -1534,7 +1534,7 @@
 }
 
 /* From and To date fields */
-.rp-bar > label {
+.rp-bar>label {
     flex: 1 1 185px;
     min-width: 0;
     gap: 8px;
@@ -1549,7 +1549,7 @@
 }
 
 /* Payment method dropdown */
-.rp-bar > select {
+.rp-bar>select {
     flex: 1.3 1 200px;
     width: 100%;
     min-width: 0;
@@ -1565,7 +1565,7 @@
     gap: 6px;
 }
 
-.rp-bar .presets > * {
+.rp-bar .presets>* {
     flex: 1 1 auto;
     text-align: center;
     white-space: nowrap;
@@ -1585,8 +1585,8 @@
         flex-wrap: wrap;
     }
 
-    .rp-bar > label,
-    .rp-bar > select,
+    .rp-bar>label,
+    .rp-bar>select,
     .rp-bar .presets,
     .rp-bar .rp-clock {
         flex: 1 1 220px;
@@ -1594,16 +1594,17 @@
 }
 
 .rp-bar {
-    align-items: center; /* instead of stretch */
+    align-items: center;
+    /* instead of stretch */
 }
 
-.rp-bar > select {
+.rp-bar>select {
     height: 44px;
     min-height: 44px;
     align-self: center;
 }
 
-.rp-bar > label,
+.rp-bar>label,
 .rp-bar .presets {
     align-self: center;
 }
@@ -1612,8 +1613,535 @@
     appearance: none;
     -webkit-appearance: none;
     padding-right: 42px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2318241b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E" );
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2318241b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
     background-size: 16px;
+}
+
+.staff-sub {
+    margin: -8px 0 0;
+    color: rgba(30, 41, 34, 0.65);
+    font-size: 0.9rem;
+}
+
+.inv-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.inv-card {
+    display: block;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1.5px solid var(--light-border);
+    box-shadow: 0 6px 18px rgba(24, 36, 27, 0.05);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.inv-card:hover {
+    transform: translateY(-2px);
+    border-color: #4fb34a;
+}
+
+.inv-card.on {
+    border-color: #2f6b3a;
+    box-shadow: 0 0 0 3px rgba(79, 179, 74, 0.2);
+}
+
+.inv-card small {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #6b756d;
+}
+
+.inv-card strong {
+    display: block;
+    margin: 4px 0 2px;
+    font-size: 2rem;
+    color: #18241b;
+}
+
+.inv-card em {
+    font-size: 0.78rem;
+    font-style: normal;
+    color: #6b756d;
+}
+
+.inv-card.warn strong {
+    color: #b26a00;
+}
+
+.inv-card.bad strong {
+    color: #a12a24;
+}
+
+.inv2 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 18px;
+    align-items: start;
+}
+
+.inv-side {
+    display: grid;
+    gap: 18px;
+    position: sticky;
+    top: 20px;
+}
+
+.inv-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.inv-bar .search {
+    flex: 1;
+    min-width: 180px;
+}
+
+.inv-bar select {
+    width: auto;
+}
+
+.inv-bar label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge.low {
+    background: #fff0d1;
+    color: #8a5a00;
+}
+
+.rp-table .neg, .neg {
+    color: #a12a24;
+}
+
+.preview {
+    margin: 12px 0 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #f3f6f0;
+    font-size: 0.82rem;
+}
+
+.pager {
+    margin-top: 14px;
+}
+
+.pagination {
+    display: flex;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+    .inv2 {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .inv-side {
+        position: static;
+    }
+
+    .inv-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.ir-sum {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.ir-sum div {
+    min-width: 160px;
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid var(--light-border);
+    box-shadow: inset 4px 0 0 #4fb34a;
+}
+
+.ir-sum small {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #6b756d;
+}
+
+.ir-sum strong {
+    font-size: 1.4rem;
+}
+
+.rp-head .staff-sub {
+    margin: 6px 0 0;
+}
+
+.inv-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 18px;
+}
+
+.inv-row>.rp-card, .inv-row>.card {
+    margin-bottom: 0;
+}
+
+.inv-row>.card {
+    position: sticky;
+    top: 20px;
+}
+
+@media (max-width: 1100px) {
+    .inv-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .inv-row>.card {
+        position: static;
+    }
+}
+
+.rp-table td, .rp-table th {
+    vertical-align: middle;
+}
+
+/* Keep the Actions cell a normal table cell */
+.rp-table td.row-actions {
+    display: table-cell;
+    white-space: nowrap;
+}
+
+.rp-table td.row-actions .btn {
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.rp-table td.row-actions .btn:last-child {
+    margin-right: 0;
+}
+
+/* Slimmer, tidier buttons inside tables */
+.rp-table .btn-sm {
+    padding: 6px 14px;
+    font-size: 0.78rem;
+}
+
+/* Inventory page: center the number columns */
+.inv-row .rp-table th.num,
+.inv-row .rp-table td.num {
+    text-align: center;
+}
+
+/* Add Stock / Deduct Stock buttons: no more tall ovals */
+#btnAdd, #btnDeduct {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 10px;
+    font-size: 0.84rem;
+    white-space: nowrap;
+    border-radius: 999px;
+}
+
+/* Pagination: Previous on the left, Next on the right, as buttons */
+.pager {
+    margin-top: 18px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pagination li a,
+.pagination li span {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.pagination li a {
+    background: #4fb34a;
+    color: #fff;
+    transition: background 0.2s ease;
+}
+
+.pagination li a:hover {
+    background: #2f6b3a;
+}
+
+.pagination li.disabled span {
+    background: #eef1ea;
+    color: #9aa39b;
+    cursor: not-allowed;
+}
+
+/* Ingredient table: Actions column fits its buttons and sits at the right edge */
+.rp-table td.row-actions,
+.rp-table th:nth-child(6):last-child {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.rp-table td.row-actions .btn {
+    min-width: 64px;
+    padding: 6px 12px;
+    text-align: center;
+    margin-left: 4px;
+    margin-right: 0;
+}
+
+/* ACTIONS heading back above the buttons, left-aligned with Select */
+.rp-table td.row-actions,
+.rp-table th:nth-child(6):last-child {
+    text-align: left;
+}
+
+.rp-table td.row-actions .btn {
+    margin-left: 0;
+    margin-right: 6px;
+}
+
+.rp-table td.row-actions .btn:last-child {
+    margin-right: 0;
+}
+
+.rp-center th.num, .rp-center td.num {
+    text-align: center;
+}
+
+.rp-table tr:hover td {
+    background: #f0f7ec;
+}
+
+.rp-table td {
+    padding: 12px;
+}
+
+.rp-bar select {
+    width: auto !important;
+    min-width: 220px;
+}
+
+.ir-sum {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.ir-sum div {
+    min-width: 0;
+    padding: 14px 20px;
+}
+
+/* Summary boxes: remove the green left edge */
+.ir-sum div,
+.rp-kpi:not(.main) {
+    box-shadow: none;
+    border: 1px solid var(--light-border);
+}
+
+/* ===== Inventory Management + Reports: stronger contrast ===== */
+
+/* Deeper green page background instead of the pale wash */
+.pos-main:has(.inv-cards),
+.pos-main:has(.ir-sum) {
+    background:
+        linear-gradient(rgba(198, 217, 190, 0.82), rgba(198, 217, 190, 0.82)),
+        url('../images/system-background.png') center / cover no-repeat fixed;
+}
+
+/* Cards, filter bars and the title banner: solid white with a clear edge */
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) :is(.rp-card, .card, .rp-bar, .inv-card, .ir-sum div, .rp-head) {
+    background: #fff;
+    border: 1.5px solid #9fbb96;
+    box-shadow: 0 8px 22px rgba(24, 36, 27, 0.16);
+}
+
+/* Darker headings and labels */
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) :is(.pos-title) {
+    color: #0f1a12;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) :is(.staff-sub) {
+    color: #2b372f;
+    font-weight: 500;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .rp-sec {
+    color: #1c4a27;
+    font-size: 0.85rem;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .rp-card h3 {
+    color: #0f1a12;
+}
+
+/* Tabs readable on any background */
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .tab {
+    background: rgba(255, 255, 255, 0.8);
+    color: #1c4a27;
+    font-weight: 700;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .tab.active {
+    background: #2f8a38;
+    color: #fff;
+}
+
+/* Tables: dark header, clear rows, bolder text */
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .rp-table th {
+    background: #2f6b3a;
+    color: #fff;
+    border-bottom: 0;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .rp-table td {
+    color: #0f1a12;
+    border-bottom: 1px solid #c9d9c3;
+    font-size: 0.9rem;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .rp-table tr:nth-child(even) td {
+    background: #f1f7ee;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .rp-table .key {
+    font-size: 1rem;
+    color: #14531f;
+}
+
+/* HIGHLIGHT the important rows */
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .rp-table tr:has(.badge.out_of_stock) td {
+    background: #fbd5d2;
+    font-weight: 700;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .rp-table tr:has(.badge.low) td {
+    background: #ffeab8;
+    font-weight: 600;
+}
+
+/* Stronger status badges */
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .badge {
+    padding: 3px 12px;
+    font-size: 0.75rem;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .badge.available {
+    background: #bfe3b8;
+    color: #14531f;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .badge.low {
+    background: #ffd36e;
+    color: #5e3d00;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .badge.out_of_stock {
+    background: #f2928c;
+    color: #6e0f0a;
+}
+
+/* Summary cards: colored for what needs attention */
+.inv-card strong {
+    font-size: 2.4rem;
+}
+
+.inv-card.warn {
+    background: #fff1c9 !important;
+    border-color: #e0b24d !important;
+}
+
+.inv-card.bad {
+    background: #fddcd9 !important;
+    border-color: #e48a85 !important;
+}
+
+.inv-card.on {
+    border-color: #1c4a27 !important;
+    box-shadow: 0 0 0 3px rgba(47, 138, 56, 0.35);
+}
+
+/* Alert box: stronger */
+.alert-low {
+    background: #ffe0dd;
+    border: 1.5px solid #dc6f69;
+    color: #82170f;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* Buttons and inputs: clearer edges */
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) .btn-soft {
+    background: #dce8d6;
+    border: 1px solid #a9c4a0;
+    color: #14231a;
+}
+
+:is(.pos-main:has(.inv-cards), .pos-main:has(.ir-sum)) :is(input, select) {
+    border-color: #8fae85;
+}
+
+/* Page title banner: proper padding, rounded corners, spacing */
+.pos-main .rp-head {
+    padding: 22px 28px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+    align-items: center;
+}
+
+.pos-main .rp-head .pos-title {
+    margin: 0;
+    font-size: 2.1rem;
+    line-height: 1.15;
+}
+
+.pos-main .rp-head .staff-sub {
+    margin: 6px 0 0;
+    font-size: 1rem;
+}
+
+.rp-clock { min-width: 190px; padding: 12px 22px; text-align: right; border-radius: 16px; background: #f1f7ee; border: 1px solid #c9d9c3; }
+.rp-clock small { display: block; font-size: 0.8rem; font-weight: 600; color: #5b645d; }
+.rp-clock strong { display: block; font-size: 1.5rem; font-weight: 800; color: #18241b; font-variant-numeric: tabular-nums; }
+
+.rp-downloads { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+
+@media print { .rp-downloads, .rp-clock { display: none !important; } }
+
+.rp-downloads .btn {
+  border-radius: 12px;
+  padding: 12px 22px;
 }

@@ -5,6 +5,7 @@ use App\Http\Middleware\OwnerOnly;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\InventoryReportController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReportController;
@@ -58,6 +59,8 @@ Route::middleware('auth')->prefix('staff')->group(function () {
     Route::get('/inventory', [InventoryController::class, 'index'])->name('staff.inventory');
     Route::post('/inventory', [InventoryController::class, 'store'])->name('staff.inventory.store');
     Route::post('/inventory/adjust', [InventoryController::class, 'adjust'])->name('staff.inventory.adjust');
+    Route::put('/inventory/{ingredient}', [InventoryController::class, 'update'])->name('staff.inventory.update');
+
 
     // Owner only
     Route::middleware(OwnerOnly::class)->group(function () {
@@ -68,7 +71,10 @@ Route::middleware('auth')->prefix('staff')->group(function () {
 
         Route::get('/sales', [ReportController::class, 'sales'])->name('staff.sales');
         Route::get('/sales/export', [ReportController::class, 'export'])->name('staff.sales.export');
-        
+
+        Route::get('/reports/inventory', [InventoryReportController::class, 'index'])->name('staff.inv-reports');
+        Route::get('/reports/inventory/xlsx', [InventoryReportController::class, 'xlsx'])->name('staff.inv-reports.xlsx');
+        Route::get('/reports/inventory/pdf', [InventoryReportController::class, 'pdf'])->name('staff.inv-reports.pdf');
 
         Route::get('/accounts', fn () => view('staff.accounts', [
             'users' => \App\Models\User::orderBy('id')->get(),

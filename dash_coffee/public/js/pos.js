@@ -35,4 +35,16 @@ if (pay && ref) {
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
 })();
 
+(function () {
+  var d = document.getElementById('clkDate'), t = document.getElementById('clkTime');
+  if (!d || !t) return;
+  function tick() {
+    var now = new Date();
+    d.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    t.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
 

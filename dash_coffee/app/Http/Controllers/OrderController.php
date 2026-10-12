@@ -23,7 +23,7 @@ class OrderController extends Controller
         $d = $request->validate([
             'items' => 'required|array|min:1',
             'items.*' => 'integer|min:1',
-            'method' => 'required|in:Cash,GCash,BacktTransfer,Maya',
+            'method' => 'required|in:Cash,GCash,Back Transfer,Maya',
             'reference' => 'nullable|string|max:50',
             'cash' => 'nullable|numeric|min:0',
         ], ['items.required' => 'The order is empty.']);
@@ -83,12 +83,15 @@ class OrderController extends Controller
             // Automatic inventory deduction
             foreach ($need as $id => $n) {
                 $ing = $stock[$id];
-                $ing->stock = (float) $ing->stock - $n;
+                $before = (float) $ing->stock;
+                $ing->stock = $before - $n;
                 $ing->save();
                 StockMovement::create([
                     'ingredient_id' => $id,
                     'type' => 'used',
                     'quantity' => -$n,
+                    'previous_stock' => $before,
+                    'resulting_stock' => $ing->stock,
                     'reason' => 'Order #' . $order->id,
                     'user_id' => auth()->id(),
                 ]);
