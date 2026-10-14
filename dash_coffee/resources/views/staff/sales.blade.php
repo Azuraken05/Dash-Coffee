@@ -35,27 +35,21 @@
   <div class="print-head"><h2>DASH COFFEE — Sales Report</h2><p>{{ $from->format('M d, Y') }} to {{ $to->format('M d, Y') }} · {{ $method ?: 'All payment methods' }}</p></div>
 
   <div class="rp-head">
-    <h1 class="pos-title">Sales Report</h1>
-    <div class="rp-actions">
-      <a class="btn btn-soft" href="{{ route('staff.sales.export', request()->query()) }}">⬇ Excel</a>
-      <button class="btn btn-primary" onclick="window.print()">⬇ PDF</button>
-    </div>
+    <div><h1 class="pos-title">Sales Report</h1></div>
+    <div class="rp-clock"><small id="clkDate"></small><strong id="clkTime"></strong></div>
   </div>
 
   <form class="rp-bar" method="GET" action="{{ route('staff.sales') }}">
     <label>From <input type="date" name="from" value="{{ $from->format('Y-m-d') }}" /></label>
     <label>To <input type="date" name="to" value="{{ $to->format('Y-m-d') }}" /></label>
     <select name="method"><option value="">All payment methods</option>@foreach ($methods as $m)<option @selected($method === $m)>{{ $m }}</option>@endforeach</select>
+    <button class="btn btn-primary">Apply</button>
     <span class="presets">
       <a href="{{ $preset(now(), now()) }}">Today</a>
       <a href="{{ $preset(now()->subDays(6), now()) }}">Last 7 days</a>
       <a href="{{ $preset(now()->startOfMonth(), now()) }}">This month</a>
       <a href="{{ $preset(now()->startOfYear(), now()) }}">This year</a>
     </span>
-    <div class="rp-clock">
-     <span class="rp-clock__date" id="reportClockDate"></span>
-     <time class="rp-clock__time" id="reportClockTime"></time>
-     </div>
   </form>
 
   <h2 class="rp-sec">Sales summary</h2>
@@ -121,6 +115,11 @@
     </table></div>
     @if ($orders->isEmpty())<div class="empty">No transactions in this period.</div>@endif
     <p class="more"><a href="{{ route('staff.history') }}">View all orders &rarr;</a></p>
+  </div>
+  
+  <div class="rp-downloads">
+    <a class="btn btn-soft" href="{{ route('staff.sales.export', request()->query()) }}"> Download Excel</a>
+    <button class="btn btn-primary" onclick="window.print()"> Download PDF</button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
