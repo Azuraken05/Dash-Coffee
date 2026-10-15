@@ -16,10 +16,13 @@
   <body>
     <header class="site-header">
       <nav class="navbar container" aria-label="Main navigation">
-        <div class="brand" aria-label="DashCoffee brand">
+      <a href="{{ route('home') }}" 
+        aria-label="DashCoffee brand" 
+        class="brand {{ request()->routeIs('home') ? 'active' : '' }}" 
+        style="text-decoration: none; color: inherit;">
           <img src="{{ asset('images/dashcoffee-logo.jpg') }}" alt="DashCoffee logo" class="brand-logo" />
           <span class="brand-text">DASH COFFEE</span>
-        </div>
+      </a>
         <div class="nav-links" id="navLinks" aria-label="Navigation links">
           <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
           <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
