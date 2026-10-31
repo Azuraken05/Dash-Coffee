@@ -8,4 +8,7 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        allowedHosts: ['sb-4ehmzbwai89q.vercel.run']
+    }
 });
