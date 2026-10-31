@@ -10,6 +10,10 @@
             "dest": "/public/$1/$2"
         },
         {
+        "src": "/menu-photos/(.*)",
+        "dest": "/public/menu-photos/$1"
+        },
+        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
