@@ -1,0 +1,8 @@
+.menu-card-thumb {
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.25); /* Zooms the image in by 25%. Increase to 1.3 or 1.4 for more zoom */
+}
+.menu-card {
+    overflow: hidden; 
+}
