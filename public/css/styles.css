@@ -1037,7 +1037,7 @@ body:not(.staff-body) {
 
 /* Hidden image na lalabas pag hover */
 .menu-card {
-    overflow: hidden;
+    position: relative;
 }
 
 /* Nakadikit sa taas ng card, hindi tutulak ng layout */
