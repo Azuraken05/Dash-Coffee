@@ -1145,7 +1145,7 @@ body:not(.staff-body) {
     mask-image: linear-gradient(to right, transparent 0%, #000 55%);
     
     /* Add these two lines to zoom */
-    transform: scale(1.45); /* Change to 1.2 for less zoom, 1.5 for more */
+    transform: scale(1.25); /* Change to 1.2 for less zoom, 1.5 for more */
     transform-origin: right center; /* Keeps it pinned to the right edge */
 }
 
