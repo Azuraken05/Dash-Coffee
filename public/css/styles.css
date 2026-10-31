@@ -1037,7 +1037,7 @@ body:not(.staff-body) {
 
 /* Hidden image na lalabas pag hover */
 .menu-card {
-    position: relative;
+    overflow: hidden;
 }
 
 /* Nakadikit sa taas ng card, hindi tutulak ng layout */
@@ -1141,9 +1141,12 @@ body:not(.staff-body) {
     border-radius: 0 19px 19px 0;
     pointer-events: none;
     z-index: 0;
-    /* fades into the card's green on the left edge */
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 55%);
     mask-image: linear-gradient(to right, transparent 0%, #000 55%);
+    
+    /* Add these two lines to zoom */
+    transform: scale(1.35); /* Change to 1.2 for less zoom, 1.5 for more */
+    transform-origin: right center; /* Keeps it pinned to the right edge */
 }
 
 /* text stays on top and on the left, on a single line so every card is the same height */
