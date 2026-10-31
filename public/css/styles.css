@@ -1137,13 +1137,18 @@ body:not(.staff-body) {
     width: 46%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center top;   /* show the top of the picture */
     border-radius: 0 19px 19px 0;
     pointer-events: none;
     z-index: 0;
-    /* fades into the card's green on the left edge */
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 55%);
-    mask-image: linear-gradient(to right, transparent 0%, #000 55%);
+    /* zoom in on the TOP of the cup, bigger, still inside the same picture area */
+    --thumb-zoom: 1.6;   /* bigger number = bigger cup, less of the bottom shown */
+    transform: scale(var(--thumb-zoom));
+    transform-origin: 50% 0;
+    clip-path: inset(0 calc((1 - 1 / var(--thumb-zoom)) * 50%) calc((1 - 1 / var(--thumb-zoom)) * 100%) calc((1 - 1 / var(--thumb-zoom)) * 50%));
+    /* fades into the card's green on the left edge (same fade, adjusted for the zoom) */
+    -webkit-mask-image: linear-gradient(to right, transparent calc((1 - 1 / var(--thumb-zoom)) * 50%), #000 calc(((1 - 1 / var(--thumb-zoom)) / 2 + 0.55 / var(--thumb-zoom)) * 100%));
+    mask-image: linear-gradient(to right, transparent calc((1 - 1 / var(--thumb-zoom)) * 50%), #000 calc(((1 - 1 / var(--thumb-zoom)) / 2 + 0.55 / var(--thumb-zoom)) * 100%));
 }
 
 /* text stays on top and on the left, on a single line so every card is the same height */
