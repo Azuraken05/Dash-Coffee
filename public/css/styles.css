@@ -1075,19 +1075,19 @@ body:not(.staff-body) {
     right: 0;
     bottom: 0;
     z-index: 2;
-     padding: 10px 12px;   /* mas mataas na padding para kita yung fade mwehehehhehe */
-     font-family: "Inter", sans-serif;
-    font-size: 11.7px;
-    line-height: 1.15;
-    font-weight: bold;  
-    color: #5e6868;
+    padding: 12px 14px 10px;   /* mas mataas na padding para kita yung fade */
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #1c2a20;            /* mas dark para hindi mawala sa background */
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95), 0 0 8px rgba(255, 255, 255, 0.85);
     background: linear-gradient(to top,
-    rgba(255, 255, 255, 0.48) 0%,
-    rgba(255, 255, 255, 0.2) 55%,
+    rgba(255, 255, 255, 0.97) 0%,
+    rgba(255, 255, 255, 0.82) 55%,
     rgba(255, 255, 255, 0) 100%);
-      /* drop shadow ng text */
-    filter: drop-shadow(0 -4px 10px rgba(47, 46, 72, 0.60));   /* drop shadow ng fade */
-        opacity: 0;
+    opacity: 0;
     transition: opacity 0.4s ease;
 }
 
@@ -1490,3 +1490,105 @@ body:not(.staff-body) {
 .addon-banner.is-shifted {
     transform: translateY(var(--popup-shift));
 }
+
+/* =====================================================================
+   MENU CARDS — kulay ng card = kulay ng produkto
+   ---------------------------------------------------------------------
+   IDAGDAG SA PINAKA-DULO ng public/css/styles.css (para ma-override ang
+   green). Walang babaguhin sa menu.blade.php.
+
+   Paano gumagana:
+   1. Bawat produkto ay may iisang kulay (--tint) = kulay ng drink/food
+      sa picture nya.
+   2. Ang gradient ng card (taas -> baba) ay kinukuha sa kulay na iyon,
+      pinalabnaw ng puti (38% sa taas, 11% sa baba) — ito ang formula na
+      tugma sa Choco Muffy na reference ng leader.
+   3. Hinahanap ng CSS ang card base sa filename ng image nito.
+
+   Gusto mong palitan ang kulay ng isang item? Hanapin ang pangalan nya sa
+   ibaba at palitan lang ang hex code. (Kailangan ng modern browser:
+   Chrome/Edge 111+, Safari 16.4+, Firefox 121+.)
+   ===================================================================== */
+
+.menu-grid .menu-card,
+.menu-grid .menu-card:hover,
+.menu-grid .menu-card:focus-visible,
+.menu-grid .menu-card.is-open {
+    background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--tint, #d9dfd9) 38%, #fff) 0%,
+        color-mix(in srgb, var(--tint, #d9dfd9) 11%, #fff) 100%
+    );
+}
+
+/* ---------- Kulay ng bawat produkto ---------- */
+
+/* Iced Coffee */
+.menu-card:has([src*="iced-coffee/dash-latte."])              { --tint: #D49B5E; } /* Dash Latte */
+.menu-card:has([src*="iced-coffee/cload-seasalt."])           { --tint: #DCC9A3; } /* Cloud Seasalt */
+.menu-card:has([src*="iced-coffee/spanish-latte."])           { --tint: #E5B573; } /* Spanish Latte */
+.menu-card:has([src*="iced-coffee/macchiato."])               { --tint: #EBBB6E; } /* Macchiato */
+.menu-card:has([src*="iced-coffee/sweet-americano."])         { --tint: #8E4A38; } /* Sweet Americano */
+.menu-card:has([src*="iced-coffee/dark-mocha."])              { --tint: #BC8B78; } /* Dark Mocha */
+
+/* Milk Tea w/ Pearls */
+.menu-card:has([src*="milktea-with-pearls/tokyo."])           { --tint: #EDB873; } /* Tokyo Brown Sugar */
+.menu-card:has([src*="milktea-with-pearls/sapporo."])         { --tint: #E2A667; } /* Sapporo */
+.menu-card:has([src*="milktea-with-pearls/hokkaido."])        { --tint: #E9D3A6; } /* Hokkaido */
+.menu-card:has([src*="milktea-with-pearls/okinawa."])         { --tint: #D7A878; } /* Okinawa Roasted */
+.menu-card:has([src*="milktea-with-pearls/nagoya."])          { --tint: #8F5445; } /* Nagoya Choco */
+.menu-card:has([src*="milktea-with-pearls/kyoto."])           { --tint: #9BBE4C; } /* Kyoto Matcha */
+
+/* Dessert w/ Salty Cream */
+.menu-card:has([src*="dessert-with-saltycream/forest-cake."]) { --tint: #A0614F; } /* Forest Cake */
+.menu-card:has([src*="dessert-with-saltycream/matcha-cream."]){ --tint: #A6C163; } /* Matcha Cream */
+.menu-card:has([src*="dessert-with-saltycream/choco-muffy."]) { --tint: #9B614C; } /* Choco Muffy */
+.menu-card:has([src*="dessert-with-saltycream/mango-cream."]) { --tint: #F2B84B; } /* Mango Cream */
+.menu-card:has([src*="dessert-with-saltycream/dark-chocolate."]){ --tint: #86503F; } /* Dark Chocolate */
+.menu-card:has([src*="dessert-with-saltycream/velvet-cake."]) { --tint: #C95A5A; } /* Velvet Cake */
+
+/* Blended Frappes */
+.menu-card:has([src*="blended-frappes/dark-forest."])         { --tint: #8E5646; } /* Dark Forest */
+.menu-card:has([src*="blended-frappes/taro-dream."])          { --tint: #B79AD6; } /* Taro Dream */
+.menu-card:has([src*="blended-frappes/red-chocolate."])       { --tint: #B8474F; } /* Red Chocolate */
+.menu-card:has([src*="blended-frappes/matchy-choco."])        { --tint: #9DB26A; } /* Matchy Choco */
+.menu-card:has([src*="blended-frappes/vanilla-bean."])        { --tint: #E6D2A8; } /* Vanilla Bean */
+.menu-card:has([src*="blended-frappes/oreo-cream."])          { --tint: #9C95A0; } /* Oreo Cream */
+
+/* Hot Drinks */
+.menu-card:has([src*="hotdrinks/dash-latte."])                { --tint: #D1AA7E; } /* Dash Latte (Hot) */
+.menu-card:has([src*="hotdrinks/spanish-latte."])             { --tint: #DDB07A; } /* Spanish Latte (Hot) */
+.menu-card:has([src*="hotdrinks/dark-chocolate."])            { --tint: #8E5B49; } /* Dark Chocolate (Hot) */
+.menu-card:has([src*="hotdrinks/hazelnut."])                  { --tint: #C39A6B; } /* Hazelnut */
+.menu-card:has([src*="hotdrinks/caramel-macchiato."])         { --tint: #D99A55; } /* Caramel Macchiato */
+.menu-card:has([src*="hotdrinks/matcha-latte."])              { --tint: #A8BF73; } /* Matcha Latte */
+
+/* Fruiteas & Fruit Sodas */
+.menu-card:has([src*="fruiteas/strawberry."])                 { --tint: #E8707F; } /* Strawberry */
+.menu-card:has([src*="fruiteas/green-apple."])                { --tint: #A8D060; } /* Green Apple */
+.menu-card:has([src*="fruiteas/mango."])                      { --tint: #F5B63C; } /* Mango */
+.menu-card:has([src*="fruiteas/lychee."])                     { --tint: #F0A8B4; } /* Lychee */
+
+/* Other Drinks */
+.menu-card:has([src*="other-drinks/matcha-frappe."])          { --tint: #A2BC6E; } /* Matcha Frappe */
+.menu-card:has([src*="other-drinks/matcha-strawberry-latte."]){ --tint: #E89AA3; } /* Matcha Strawberry Latte */
+.menu-card:has([src*="other-drinks/salted-caramel-frappe."])  { --tint: #D9A66A; } /* Salted Caramel Frappe */
+.menu-card:has([src*="other-drinks/salted-caramel-latte."])   { --tint: #D6A05F; } /* Salted Caramel Latte */
+.menu-card:has([src*="other-drinks/salted-cocoa-chocolate."]) { --tint: #8C5A4A; } /* Salted Cocoa Chocolate */
+.menu-card:has([src*="other-drinks/strawberry-milk."])        { --tint: #F0A0B5; } /* Strawberry Milk */
+
+/* Savory — Silog (iisang warm gold muna; palitan per item kung gusto) */
+.menu-card:has([src*="silog-menu/"])                          { --tint: #E3B25E; } /* lahat ng silog */
+
+/* Snacks */
+.menu-card:has([src*="snacks/spam-sandwich."])                { --tint: #D9B27C; } /* Spam Sandwich */
+.menu-card:has([src*="snacks/ham-sandwich."])                 { --tint: #D9B27C; } /* Ham Sandwich */
+.menu-card:has([src*="snacks/hungarian-overload."])           { --tint: #D9A56E; } /* Hungarian Overload */
+.menu-card:has([src*="snacks/burger."])                       { --tint: #D49A5A; } /* Burger */
+.menu-card:has([src*="snacks/cheese-sticks."])                { --tint: #F0C24F; } /* Cheese Sticks */
+.menu-card:has([src*="snacks/fries."])                        { --tint: #F2C94C; } /* Fries */
+.menu-card:has([src*="snacks/siomai."])                       { --tint: #EDB06B; } /* Siomai */
+.menu-card:has([src*="snacks/big-siomai."])                   { --tint: #EDB06B; } /* Big Siomai */
+.menu-card:has([src*="snacks/siomai-rice."])                  { --tint: #EDB06B; } /* Siomai Rice */
+.menu-card:has([src*="snacks/gyoza."])                        { --tint: #D9A05B; } /* Gyoza */
+.menu-card:has([src*="snacks/waffle."])                       { --tint: #E0B068; } /* Waffle */

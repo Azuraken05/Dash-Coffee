@@ -35,6 +35,7 @@ class ReportController extends Controller
             fputcsv($f, ['Average order', number_format($d['avg'], 2, '.', '')]);
             fputcsv($f, ['Items sold', $d['itemsSold']]);
             fputcsv($f, ['Peak hour', $d['peakLabel'] ?? '-']);
+            fputcsv($f, ['Deleted orders', $d['deletedOrders']->count()]);
             fputcsv($f, []);
             fputcsv($f, ['DAILY SALES']);
             fputcsv($f, ['Date', 'Sales']);
@@ -49,9 +50,35 @@ class ReportController extends Controller
             foreach ($d['payments'] as $m => $p) fputcsv($f, [$m, $p['count'], number_format($p['total'], 2, '.', '')]);
             fputcsv($f, []);
             fputcsv($f, ['TRANSACTIONS']);
-            fputcsv($f, ['Order #', 'Date/time', 'Items', 'Payment', 'Total', 'Status']);
+            fputcsv($f, ['Order #', 'Date/time', 'Items', 'Payment', 'Total', 'Status', 'Edited', 'Edited by', 'Edit reason', 'Edited at']);
             foreach ($d['orders'] as $o) {
-                fputcsv($f, [$o->id, $o->created_at->format('Y-m-d H:i'), $o->items->map(fn ($i) => $i->qty . 'x ' . $i->name)->implode('; '), $o->payment_method, number_format($o->total, 2, '.', ''), $o->status]);
+                fputcsv($f, [
+                    $o->id,
+                    $o->created_at->format('Y-m-d H:i'),
+                    $o->items->map(fn ($i) => $i->qty . 'x ' . $i->name)->implode('; '),
+                    $o->payment_method,
+                    number_format($o->total, 2, '.', ''),
+                    $o->status,
+                    $o->edited_at ? 'Yes' : 'No',
+                    $o->edited_by_name,
+                    $o->edit_reason,
+                    $o->edited_at?->format('Y-m-d H:i'),
+                ]);
+            }
+            fputcsv($f, []);
+            fputcsv($f, ['DELETED ORDERS (AUDIT)']);
+            fputcsv($f, ['Order #', 'Date/time', 'Items', 'Payment', 'Total', 'Deleted by', 'Delete reason', 'Deleted at']);
+            foreach ($d['deletedOrders'] as $o) {
+                fputcsv($f, [
+                    $o->id,
+                    $o->created_at->format('Y-m-d H:i'),
+                    $o->items->map(fn ($i) => $i->qty . 'x ' . $i->name)->implode('; '),
+                    $o->payment_method,
+                    number_format($o->total, 2, '.', ''),
+                    $o->deleted_by_name,
+                    $o->delete_reason,
+                    $o->deleted_at?->format('Y-m-d H:i'),
+                ]);
             }
             fclose($f);
         }, $name, ['Content-Type' => 'text/csv; charset=UTF-8']);
@@ -71,6 +98,13 @@ class ReportController extends Controller
             ->whereBetween('created_at', [$from, $to])
             ->when($method, fn ($q) => $q->where('payment_method', $method))
             ->latest()->get();
+
+        // Soft-deleted orders are excluded from all sales totals above (global scope),
+        // but the owner still needs to see who deleted them and why.
+        $deletedOrders = Order::onlyTrashed()->with('items', 'user')
+            ->whereBetween('created_at', [$from, $to])
+            ->when($method, fn ($q) => $q->where('payment_method', $method))
+            ->latest('deleted_at')->get();
 
         $total = (float) $orders->sum('total');
         $count = $orders->count();
@@ -105,6 +139,7 @@ class ReportController extends Controller
 
         return [
             'from' => $from, 'to' => $to, 'method' => $method, 'orders' => $orders,
+            'deletedOrders' => $deletedOrders,
             'total' => $total, 'count' => $count, 'avg' => $count ? $total / $count : 0,
             'itemsSold' => $orders->flatMap(fn ($o) => $o->items)->sum('qty'),
             'daily' => $daily, 'monthly' => $monthly, 'hCount' => $hCount, 'hSales' => $hSales,
