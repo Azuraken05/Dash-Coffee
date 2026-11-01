@@ -2654,3 +2654,38 @@
     navigation: none;
   }
 }
+/* =====================================================================
+   ORDER AUDIT — mobile card layout
+   ===================================================================== */
+@media (max-width: 768px) {
+  /* The status area now carries audit text, so let it use the full card width
+     while keeping the badges aligned to the right like before. */
+  .hist .rp-table tbody tr td:nth-child(6) {
+    justify-self: stretch;
+    text-align: left;
+  }
+
+  .hist .rp-table tbody tr td:nth-child(6) .hist-status {
+    justify-content: flex-end;
+  }
+
+  .hist .rp-table tbody tr td:nth-child(6) .audit-note,
+  .hist .rp-table tbody tr td:nth-child(6) .audit-reason {
+    text-align: left;
+  }
+
+  /* Deleted cards get a soft red tint instead of the green stripe. */
+  .hist .rp-table tbody tr.is-deleted {
+    background: #fff5f4;
+    border-color: #e7c3bf;
+  }
+
+  .hist .rp-table tbody tr.is-deleted td {
+    background: transparent !important;
+  }
+
+  /* Let all 4 action buttons join the 2-column grid directly. */
+  .hist .row-actions-wrap {
+    display: contents;
+  }
+}

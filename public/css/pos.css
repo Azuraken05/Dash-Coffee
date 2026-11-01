@@ -2527,45 +2527,115 @@
 }
 
 .pos-main:has(.hist) :is(.rp-card, .rp-head) {
-    background: #fff;
-    border: 1.5px solid #9fbb96;
-    box-shadow: 0 8px 22px rgba(24, 36, 27, 0.16);
+  background: #fff;
+  border: 1.5px solid #9fbb96;
+  box-shadow: 0 8px 22px rgba(24, 36, 27, 0.16);
 }
-
-.pos-main:has(.hist) .pos-title {
-    color: #0f1a12;
+.pos-main:has(.hist) .pos-title { color: #0f1a12; }
+/* Order History: fixed column widths so every row lines up exactly */
+.hist .rp-table {
+  width: 100%;
+  table-layout: fixed;
 }
+.hist .rp-table th:nth-child(1), .hist .rp-table td:nth-child(1) { width: 8%; }
+.hist .rp-table th:nth-child(2), .hist .rp-table td:nth-child(2) { width: 15%; }
+.hist .rp-table th:nth-child(3), .hist .rp-table td:nth-child(3) { width: 29%; }
+.hist .rp-table th:nth-child(4), .hist .rp-table td:nth-child(4) { width: 10%; }
+.hist .rp-table th:nth-child(5), .hist .rp-table td:nth-child(5) { width: 10%; }
+.hist .rp-table th:nth-child(6), .hist .rp-table td:nth-child(6) { width: 11%; }
+.hist .rp-table th:nth-child(7), .hist .rp-table td:nth-child(7) { width: 17%; }
 
 .hist .rp-table th {
-    background: #2f6b3a;
-    color: #fff;
-    border-bottom: 0;
+  background: #2f6b3a;
+  color: #fff;
+  border-bottom: 0;
+  padding: 12px 14px;
+  text-align: left;
+  white-space: nowrap;
 }
-
 .hist .rp-table td {
-    color: #0f1a12;
-    border-bottom: 1px solid #c9d9c3;
-    font-size: 0.9rem;
+  color: #0f1a12;
+  border-bottom: 1px solid #c9d9c3;
+  font-size: 0.9rem;
+  padding: 11px 14px;
+  vertical-align: middle;
+}
+.hist .rp-table tr:nth-child(even) td { background: #f1f7ee; }
+.hist .rp-table th.num, .hist .rp-table td.num { text-align: right; }
+
+/* Short labels are only used on the narrow layout */
+.hist .lbl-short { display: none; }
+
+/* Empty state: same card, header still visible, one placeholder box */
+.hist .hist-empty td {
+  padding: 0;
+  border-bottom: 0;
+  white-space: normal !important;
+  background: transparent !important;
+}
+.hist .hist-empty-box {
+  display: block;
+  margin: 14px 4px 6px;
+  padding: 26px 14px;
+  border: 1.5px dashed #c2d6ba;
+  border-radius: 14px;
+  background: #fbfdf9;
+  color: #6f8274;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: center;
 }
 
-.hist .rp-table tr:nth-child(even) td {
-    background: #f1f7ee;
+/* Only the total stays on one line; date and items may wrap */
+.hist .rp-table td:nth-child(4) { white-space: nowrap; }
+.hist .rp-table td:nth-child(2) { overflow-wrap: break-word; }
+.hist .rp-table td:nth-child(3) { line-height: 1.45; }
+
+/* Actions: equal-width buttons that shrink instead of overflowing */
+.hist .rp-table td.row-actions { white-space: nowrap; }
+.hist .row-actions-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.hist .row-actions-wrap .btn {
+  flex: 0 1 84px;
+  display: block;
+  min-width: 0;
+  margin: 0;
+  padding: 6px 8px;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.hist .rp-table th.num, .hist .rp-table td.num {
-    text-align: center;
-}
+/* Small laptop / large tablet: keep the table but rebalance the columns */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .hist .rp-table th:nth-child(1), .hist .rp-table td:nth-child(1) { width: 9%; }
+  .hist .rp-table th:nth-child(2), .hist .rp-table td:nth-child(2) { width: 19%; }
+  .hist .rp-table th:nth-child(3), .hist .rp-table td:nth-child(3) { width: 24%; }
+  .hist .rp-table th:nth-child(4), .hist .rp-table td:nth-child(4) { width: 10%; }
+  .hist .rp-table th:nth-child(5), .hist .rp-table td:nth-child(5) { width: 9%; }
+  .hist .rp-table th:nth-child(6), .hist .rp-table td:nth-child(6) { width: 10%; }
+  .hist .rp-table th:nth-child(7), .hist .rp-table td:nth-child(7) { width: 19%; }
 
-.hist .btn-soft {
-    background: #dce8d6;
-    border: 1px solid #a9c4a0;
-    color: #14231a;
-}
+  .hist .rp-table th {
+    padding: 10px 8px;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+  }
 
-.hist .badge.available {
-    background: #bfe3b8;
-    color: #14531f;
+  .hist .rp-table td {
+    padding: 10px 8px;
+    font-size: 0.82rem;
+  }
 }
+.hist .btn-soft { background: #dce8d6; border: 1px solid #a9c4a0; color: #14231a; }
+.hist .badge.available { background: #bfe3b8; color: #14531f; }
 
 /* Order Entry: same look as Inventory */
 .pos-main:has(.prod-grid) {
@@ -2923,4 +2993,300 @@
   position: fixed !important;
   top: 16px !important;
   z-index: 210 !important;
+}
+/* =====================================================================
+   ORDER AUDIT — edit / delete
+   ===================================================================== */
+
+/* Status cell: normal badge + Edited/Deleted audit text */
+.hist-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge.edited {
+    background: #fff0c2;
+    color: #7a5300;
+    border: 1px solid #e6c56a;
+}
+
+.hist .audit-note {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: #5f6f5f;
+}
+
+.hist .audit-reason {
+    display: block;
+    margin-top: 1px;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: #7a3d00;
+    font-style: italic;
+    overflow-wrap: anywhere;
+}
+
+.hist .rp-table tr.is-deleted td {
+    background: #fff5f4 !important;
+    color: #6f3d3a;
+}
+
+.hist .rp-table tr.is-deleted td:nth-child(4) {
+    text-decoration: line-through;
+}
+
+.hist .row-actions-wrap {
+    flex-wrap: wrap;
+}
+
+.hist .row-actions-wrap .btn {
+    flex: 0 1 auto;
+    min-width: 64px;
+}
+
+/* Delete-reason modal */
+.hist-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 26, 18, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.hist-modal[hidden] {
+    display: none !important;
+}
+
+.hist-modal-card {
+    width: 100%;
+    max-width: 460px;
+    padding: 24px;
+    border-radius: 20px;
+    background: #fff;
+    border: 1.5px solid #9fbb96;
+    box-shadow: 0 24px 60px rgba(15, 26, 18, 0.3);
+}
+
+.hist-modal-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+    color: #0f1a12;
+}
+
+.hist-modal-text {
+    margin: 0 0 18px;
+    color: #4c5a4f;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.hist-modal-card label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    color: #1f3d27;
+}
+
+.hist-modal-card textarea {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 90px;
+    padding: 11px 13px;
+    border: 1.5px solid #a9c4a0;
+    border-radius: 12px;
+    font: inherit;
+    color: #18241b;
+    background: #fbfdf9;
+    resize: vertical;
+}
+
+.hist-modal-card textarea:focus {
+    outline: 0;
+    border-color: #4fb34a;
+    box-shadow: 0 0 0 4px rgba(79, 179, 74, 0.16);
+}
+
+.hist-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.req {
+    color: #c0392b;
+}
+
+.field-error {
+    margin: 6px 0 0;
+    color: #a12a24;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* Sales report: deleted-orders audit table */
+.deleted-audit {
+    border-color: #e0b2ae;
+}
+
+.deleted-table tr.is-deleted td {
+    background: #fdf1ef !important;
+}
+
+.deleted-reason {
+    color: #7a2a24;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.deleted-reason .audit-note {
+    display: block;
+    margin-top: 4px;
+    color: #6b756d;
+    font-weight: 500;
+    font-size: 0.72rem;
+}
+
+/* Edit-order page */
+.order-edit-card {
+    max-width: 980px;
+}
+
+.order-edit-card h3 small {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6b756d;
+}
+
+.order-edit .staff-sub {
+    margin: 6px 0 0;
+    color: #5b645d;
+    font-size: 0.9rem;
+}
+
+.edit-table {
+    width: 100%;
+    min-width: 600px;
+}
+
+.edit-table td {
+    vertical-align: middle;
+}
+
+.edit-qty {
+    width: 84px;
+    padding: 7px 9px;
+    border: 1.5px solid #a9c4a0;
+    border-radius: 10px;
+    font: inherit;
+    text-align: right;
+}
+
+.edit-qty:focus {
+    outline: 0;
+    border-color: #4fb34a;
+    box-shadow: 0 0 0 3px rgba(79, 179, 74, 0.16);
+}
+
+.muted {
+    color: #6b756d;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.edit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.edit-grid label,
+.edit-reason {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #1f3d27;
+}
+
+.edit-grid input,
+.edit-grid select,
+.edit-reason textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 11px;
+    border: 1.5px solid #a9c4a0;
+    border-radius: 10px;
+    background: #fff;
+    color: #18241b;
+    font: inherit;
+}
+
+.edit-grid [hidden] {
+    display: none !important;
+}
+
+.edit-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 2px solid #2f6b3a;
+    font-weight: 800;
+    color: #0f1a12;
+}
+
+.edit-total strong {
+    font-size: 1.7rem;
+    color: #14531f;
+}
+
+.edit-reason {
+    margin-top: 18px;
+}
+
+.edit-reason textarea {
+    min-height: 84px;
+    resize: vertical;
+    font-weight: 500;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+@media (max-width: 900px) {
+    .edit-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .edit-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .order-edit-card {
+        padding: 16px;
+    }
+
+    .edit-actions .btn {
+        flex: 1;
+    }
 }

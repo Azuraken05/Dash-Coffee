@@ -18,6 +18,13 @@
       <div class="rp-clock"><small id="clkDate"></small><strong id="clkTime"></strong></div>
     </div>
 
+    @if (session('ok'))
+      <div class="alert-ok">{{ session('ok') }}</div>
+    @endif
+    @if ($errors->any())
+      <div class="alert-low"><p>{{ $errors->first() }}</p></div>
+    @endif
+
     @include('staff._low', ['low' => $low])
 
     <div class="tabs">
@@ -65,47 +72,46 @@
       </div>
     </div>
 
-    <div class="rp-card">
+    <div class="rp-card fit-card">
       <h3>Recent orders</h3>
       @if ($recent->isEmpty())
         <div class="empty">No orders yet</div>
       @else
-        <div class="rp-scroll">
-<div class="rp-scroll">
-    <table class="rp-table">
-        <tr>
-            <th>Order #</th>
-            <th>Date / time</th>
-            <th>Items</th>
-            <th>Payment</th>
-            <th class="num">Total</th>
-            <th></th>
-        </tr>
+        <div class="rp-scroll ord-desktop">
+          <table class="rp-table fit-table mobile-card-table">
+            <thead>
+              <tr>
+                <th scope="col">Order #</th>
+                <th scope="col" class="m-hide"><span class="lbl-long">Date / time</span><span class="lbl-short">Date</span></th>
+                <th scope="col">Items</th>
+                <th scope="col" class="m-hide">Payment</th>
+                <th scope="col" class="num">Total</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($recent as $o)
+                <tr onclick="window.location.href='{{ route('staff.receipt', $o) }}'" style="cursor: pointer;">
+                  <td data-label="Order"><strong>#{{ $o->id }}</strong><span class="m-sub">{{ $o->created_at->format('M d, Y') }}<br>{{ $o->created_at->format('g:i A') }}</span></td>
+                  <td data-label="Date" class="m-hide"><span class="d-date">{{ $o->created_at->format('M d, Y') }}</span><span class="d-time">{{ $o->created_at->format('g:i A') }}</span></td>
+                  <td data-label="Items"><span class="items-text">{{ $o->items->map(fn ($i) => $i->qty . '× ' . $i->name)->implode(', ') }}</span></td>
+                  <td data-label="Payment" class="m-hide">{{ $o->payment_method }}</td>
+                  <td data-label="Total" class="num key">₱{{ number_format($o->total, 2) }}</td>
+                  <td data-label="Actions" class="row-actions"><a class="btn btn-soft btn-sm" href="{{ route('staff.receipt', $o) }}">View</a></td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
 
-        @foreach ($recent as $o)
-
-            {{-- REPLACE THE EXISTING ORDER ROW HERE --}}
-            <tr
-                onclick="window.location.href='{{ route('staff.receipt', $o) }}'"
-                style="cursor: pointer;"
-            >
-                <td><strong>#{{ $o->id }}</strong></td>
-                <td>{{ $o->created_at->format('M d, g:i A') }}</td>
-                <td>{{ $o->items->map(fn ($i) => $i->qty . '× ' . $i->name)->implode(', ') }}</td>
-                <td>{{ $o->payment_method }}</td>
-                <td class="num key">₱{{ number_format($o->total, 2) }}</td>
-                <td class="receipt-action">
-                    <a href="{{ route('staff.receipt', $o) }}">View</a>
-                </td>
-            </tr>
-
-        @endforeach
-    </table>
-</div>
+        {{-- Phones: same card as Order History --}}
+        @include('staff._order_cards', ['orders' => $recent, 'full' => true])
       @endif
       <p class="more"><a href="{{ route('staff.history') }}">View all orders &rarr;</a></p>
     </div>
   </div>
+
+  @include('staff._delete_order_modal')
 
   <style>
     /* Same look as Order History / Inventory */
@@ -143,7 +149,7 @@
     /* Stock card fills the row height; link sits at the bottom */
     .dash-cols > .card { display: flex; flex-direction: column; }
     .dash-cols > .card .more { margin-top: auto; padding-top: 14px; }
-    .stock-need { margin-top: 16px; }
+    .dash-need { margin-top: 16px; }
     .stock-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 2px; border-bottom: 1px solid #dfe9da; font-size: 0.88rem; color: #0f1a12; }
     .stock-item:last-child { border-bottom: 0; }
     .stock-item em { font-style: normal; }
@@ -162,12 +168,12 @@
     .stock-box.out strong { color: #d9484e; }
 
     /* Recent orders table */
-    .dash-page .rp-table th { background: #2f6b3a; color: #fff; border-bottom: 0; }
-    .dash-page .rp-table td { color: #0f1a12; border-bottom: 1px solid #c9d9c3; font-size: 0.9rem; }
-    .dash-page .rp-table tr:nth-child(even) td { background: #f1f7ee; }
-    .dash-page .more { margin: 14px 0 0; font-weight: 600; }
+    .dash-page .fit-table th { background: #2f6b3a; color: #fff; border-bottom: 0; }
+    .dash-page .fit-table td { color: #0f1a12; border-bottom: 1px solid #c9d9c3; font-size: 0.9rem; }
+    .dash-page .fit-table tr:nth-child(even) td { background: #f1f7ee; }
+    .dash-page .fit-table .row-actions { white-space: nowrap; }
 
-    @@media (max-width: 800px) {
+    @media (max-width: 800px) {
       .dash-stats, .dash-cols { grid-template-columns: 1fr; }
     }
   </style>

@@ -1,6 +1,23 @@
 @extends('layouts.staff')
 @section('title', 'Receipt #' . $order->id)
 @section('content')
+  @if ($order->trashed())
+    <div class="alert-low no-print">
+      <p>
+        <strong>Deleted order.</strong>
+        Deleted by {{ $order->deleted_by_name ?: 'Staff' }}
+        on {{ $order->deleted_at?->format('M d, Y g:i A') }}.
+        Reason: {{ $order->delete_reason ?: '—' }}
+      </p>
+    </div>
+  @elseif ($order->edited_at)
+    <div class="alert-ok no-print">
+      Edited by {{ $order->edited_by_name ?: 'Staff' }}
+      on {{ $order->edited_at->format('M d, Y g:i A') }}.
+      Reason: {{ $order->edit_reason ?: '—' }}
+    </div>
+  @endif
+
   <div class="receipt-box"> <!-- Changed from .receipt to .receipt-box -->
     <h2>DASH COFFEE</h2>
     <p class="center">Eastwood Residences, Rodriguez, Rizal</p>
