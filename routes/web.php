@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\StaffController;
 use App\Http\Middleware\OwnerOnly;
@@ -29,7 +30,7 @@ use App\Http\Controllers\FeedbackController;
 | Public pages (customers can see these)
 |--------------------------------------------------------------------------
 */
-Route::view('/', 'homepage')->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/about', 'about')->name('about');
 Route::view('/menu', 'menu')->name('menu');
 Route::view('/contact', 'contact')->name('contact');
