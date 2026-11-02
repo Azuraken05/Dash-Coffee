@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;   
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StaffAuthController extends Controller
 {
@@ -24,7 +24,11 @@ class StaffAuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
+        // No "remember me" — the login ends when the browser closes
         if (Auth::attempt($credentials)) {
+            // Start a fresh session after logging in (security best practice)
+            $request->session()->regenerate();
+
             return redirect()->intended(route('staff.dashboard'))->with('just_logged_in', true);
         }
 
