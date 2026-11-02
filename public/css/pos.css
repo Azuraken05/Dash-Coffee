@@ -2995,7 +2995,7 @@
   z-index: 210 !important;
 }
 /* =====================================================================
-   ORDER AUDIT — edit / delete
+   ORDER AUDIT ï¿½ edit / delete
    ===================================================================== */
 
 /* Status cell: normal badge + Edited/Deleted audit text */
@@ -3288,5 +3288,141 @@
 
     .edit-actions .btn {
         flex: 1;
+    }
+}
+
+/* ================================
+   QR PAYMENT MODAL
+================================ */
+
+/* Keep modal hidden until opened */
+.qr-payment-modal[hidden] {
+    display: none !important;
+}
+
+/* Full-screen wrapper */
+.qr-payment-modal:not([hidden]) {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    height: 100% !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+
+    background: rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: none !important;
+    overflow-y: auto !important;
+}
+
+/* White QR card */
+.qr-payment-card {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    max-height: calc(100vh - 40px) !important;
+
+    margin: auto !important;
+    padding: 28px !important;
+    box-sizing: border-box !important;
+
+    background: #ffffff !important;
+    border-radius: 24px !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15) !important;
+
+    overflow-y: auto !important;
+}
+
+/* Close button */
+.qr-payment-card .qr-close {
+    position: absolute !important;
+    top: 14px !important;
+    right: 16px !important;
+
+    border: none !important;
+    background: transparent !important;
+    color: #68756b !important;
+
+    font-size: 25px !important;
+    cursor: pointer !important;
+}
+
+/* QR title */
+#qrPaymentTitle {
+    margin: 0 24px 12px !important;
+    text-align: center !important;
+    color: #216b2c !important;
+    font-size: 20px !important;
+}
+
+/* Subtitle */
+.qr-payment-subtitle {
+    text-align: center !important;
+    color: #68756b !important;
+    line-height: 1.5 !important;
+}
+
+/* QR placeholder */
+.qr-placeholder {
+    width: 100% !important;
+    max-width: 260px !important;
+    min-height: 220px !important;
+
+    margin: 22px auto !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+
+    border: 2px dashed #a5c9a8 !important;
+    border-radius: 18px !important;
+    background: #f4faf4 !important;
+}
+
+/* Total */
+.qr-payment-total {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 12px !important;
+
+    padding: 18px 0 !important;
+    border-top: 1px solid #e2e9e2 !important;
+    border-bottom: 1px solid #e2e9e2 !important;
+}
+
+/* Payment button */
+#paymentReceived {
+    display: block !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    margin-top: 20px !important;
+}
+
+/* Mobile sizing */
+@media (max-width: 600px) {
+    .qr-payment-modal:not([hidden]) {
+        padding: 14px !important;
+    }
+
+    .qr-payment-card {
+        max-width: 100% !important;
+        max-height: calc(100dvh - 28px) !important;
+        padding: 22px 18px !important;
+        border-radius: 20px !important;
+    }
+
+    .qr-placeholder {
+        max-width: 230px !important;
+        min-height: 190px !important;
     }
 }

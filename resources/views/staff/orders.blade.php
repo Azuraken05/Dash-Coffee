@@ -9,9 +9,11 @@
     <div class="split-layout">
         <section>
             <div class="rp-head">
-        <div><h1 class="pos-title">Order Entry</h1></div>
-        <div class="rp-clock"><small id="clkDate"></small><strong id="clkTime"></strong></div>
-    </div>
+                <div>
+                    <h1 class="pos-title">Order Entry</h1>
+                </div>
+                <div class="rp-clock"><small id="clkDate"></small><strong id="clkTime"></strong></div>
+            </div>
             <div class="toolbar">
                 <div class="tabs" id="catTabs">
                     <button type="button" class="tab active" data-cat="">All Products</button>
@@ -22,13 +24,12 @@
                 <input class="search" id="prodSearch" type="search" placeholder="Search products" />
             </div>
             <div class="prod-grid" id="prodGrid">
-                                @foreach ($products as $p)
+                @foreach ($products as $p)
                     @php $ok = $p->displayStatus() === 'available'; @endphp
                     <button type="button" class="prod-tile {{ $ok ? '' : 'off' }}" @disabled(!$ok)
                         data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-price="{{ $p->price }}"
                         data-cat="{{ $p->category }}">
-                        <img class="tile-img"
-                            src="{{ $p->image ? asset($p->image) : asset('assets/dashcoffee-logo.jpg') }}"
+                        <img class="tile-img" src="{{ $p->image ? asset($p->image) : asset('assets/dashcoffee-logo.jpg') }}"
                             alt="{{ $p->name }}" />
                         <strong>{{ $p->name }}</strong>
                         <span>₱{{ number_format($p->price, 2) }}</span>
@@ -68,6 +69,31 @@
                     </div>
                     <div class="actions"><button type="button" class="btn btn-danger" id="clearCart">Clear
                             Order</button><button class="btn btn-primary">Confirm Order</button></div>
+                </div>
+                <!-- QR Payment Modal -->
+                <div class="qr-payment-modal" id="qrPaymentModal" hidden>
+                    <div class="qr-payment-card">
+                        <button type="button" class="qr-close" id="qrClose">&times;</button>
+
+                        <h2 id="qrPaymentTitle">Scan to Pay</h2>
+                        <p class="qr-payment-subtitle">
+                            Scan the QR code using your payment app.
+                        </p>
+
+                        <div class="qr-placeholder" id="qrPlaceholder">
+                            <span>QR CODE</span>
+                            <small>Insert your QR image here later</small>
+                        </div>
+
+                        <p class="qr-payment-total">
+                            Total to pay:
+                            <strong id="qrPaymentTotal">₱0.00</strong>
+                        </p>
+
+                        <button type="button" class="btn btn-primary" id="paymentReceived">
+                            Payment Received
+                        </button>
+                    </div>
                 </div>
             </form>
         </aside>
@@ -171,7 +197,7 @@
             filter();
         });
     </script>
-        @if (!empty($receipt))
+    @if (!empty($receipt))
         <div class="receipt-modal" id="receiptModal">
             <div class="receipt-box">
                 @include('staff._receipt', ['order' => $receipt])
@@ -183,10 +209,17 @@
         </div>
         <script>
             var rm = document.getElementById('receiptModal');
-            function closeRm() { if (rm) rm.remove(); }
+
+            function closeRm() {
+                if (rm) rm.remove();
+            }
             document.getElementById('receiptClose').onclick = closeRm;
-            rm.addEventListener('click', function (e) { if (e.target === rm) closeRm(); });
-            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeRm(); });
+            rm.addEventListener('click', function(e) {
+                if (e.target === rm) closeRm();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeRm();
+            });
         </script>
     @endif
 @endsection

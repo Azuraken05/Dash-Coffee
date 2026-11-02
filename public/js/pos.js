@@ -29,4 +29,43 @@ if (pay && ref) {
   setInterval(tick, 1000);
 })();
 
+// QR Payment Modal
+(function () {
+    var form = document.getElementById('orderForm');
+    var pay = document.getElementById('payMethod');
+    var modal = document.getElementById('qrPaymentModal');
+    var title = document.getElementById('qrPaymentTitle');
+    var totalDisplay = document.getElementById('qrPaymentTotal');
+    var receivedBtn = document.getElementById('paymentReceived');
+    var closeBtn = document.getElementById('qrClose');
+    var cartTotal = document.getElementById('cartTotal');
 
+    if (!form || !pay || !modal || !receivedBtn) return;
+
+    var paymentConfirmed = false;
+
+    form.addEventListener('submit', function (e) {
+        if (pay.value === 'Cash' || paymentConfirmed) {
+            return;
+        }
+
+        e.preventDefault();
+
+        title.textContent = 'Pay using ' + pay.value;
+        totalDisplay.textContent = cartTotal ? cartTotal.textContent : '₱0.00';
+
+        modal.hidden = false;
+    });
+
+    receivedBtn.addEventListener('click', function () {
+        paymentConfirmed = true;
+        modal.hidden = true;
+        form.requestSubmit();
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+            modal.hidden = true;
+        });
+    }
+})();
