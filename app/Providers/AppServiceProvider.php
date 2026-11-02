@@ -15,8 +15,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // 2. Add this inside boot() so asset() generates https:// links on Vercel
-        if ($this->app->environment('production')) {
-            URL::forceScheme('https');
+        if (app()->environment('production')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
         }
     }
 }
