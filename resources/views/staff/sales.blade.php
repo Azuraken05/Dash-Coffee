@@ -68,9 +68,17 @@
       <h3>Payment methods</h3>
       @if ($payments->isEmpty())<div class="empty">No sales data yet.</div>@else
         <div class="rp-chart sm"><canvas id="pChart"></canvas></div>
-        <table class="rp-table">
-          <tr><th>Method</th><th class="num">Orders</th><th class="num">Total</th></tr>
-          @foreach ($payments as $m => $p)<tr><td>{{ $m }}</td><td class="num">{{ $p['count'] }}</td><td class="num key">₱{{ number_format($p['total'], 2) }}</td></tr>@endforeach
+        <table class="rp-table fit-table mobile-card-table">
+          <thead>
+            <tr>
+              <th scope="col">Method</th>
+              <th scope="col" class="num">Orders</th>
+              <th scope="col" class="num">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($payments as $m => $p)<tr><td data-label="Method">{{ $m }}</td><td class="num" data-label="Orders">{{ $p['count'] }}</td><td class="num key" data-label="Total">₱{{ number_format($p['total'], 2) }}</td></tr>@endforeach
+          </tbody>
         </table>
       @endif
     </div>
@@ -85,9 +93,13 @@
     <div class="rp-card">
       <h3>Top-selling products</h3>
       @if ($products->isEmpty())<div class="empty">No sales data yet.</div>@else
-        <div class="rp-scroll"><table class="rp-table">
-          <tr><th>#</th><th>Product</th><th class="num">Qty sold</th><th class="num">Revenue</th></tr>
-          @foreach ($products as $i => $p)<tr class="{{ $i === 0 ? 'top' : '' }}"><td>{{ $i + 1 }}</td><td>{{ $p->name }}</td><td class="num">{{ $p->qty }}</td><td class="num key">₱{{ number_format($p->revenue, 2) }}</td></tr>@endforeach
+        <div class="rp-scroll"><table class="rp-table fit-table mobile-card-table">
+          <thead>
+            <tr><th scope="col">#</th><th scope="col">Product</th><th scope="col" class="num">Qty sold</th><th scope="col" class="num">Revenue</th></tr>
+          </thead>
+          <tbody>
+            @foreach ($products as $i => $p)<tr class="{{ $i === 0 ? 'top' : '' }}"><td data-label="#">{{ $i + 1 }}</td><td data-label="Product">{{ $p->name }}</td><td class="num" data-label="Qty sold">{{ $p->qty }}</td><td class="num key" data-label="Revenue">₱{{ number_format($p->revenue, 2) }}</td></tr>@endforeach
+          </tbody>
         </table></div>
       @endif
     </div>
@@ -106,19 +118,69 @@
   <h2 class="rp-sec">Transactions</h2>
   <div class="rp-card">
     <h3>Recent transactions <input class="search rp-search" id="txSearch" type="search" placeholder="Search order #, item, payment" /></h3>
-    <div class="rp-scroll"><table class="rp-table" id="txTable">
-      <tr><th>Order #</th><th>Date / time</th><th>Items</th><th>Payment</th><th class="num">Total</th><th></th></tr>
-      @foreach ($orders->take(3) as $o)
-        <tr>
-          <td><strong>#{{ $o->id }}</strong></td><td>{{ $o->created_at->format('M d, g:i A') }}</td>
-          <td>{{ $o->items->map(fn ($i) => $i->qty . '× ' . $i->name)->implode(', ') }}</td>
-          <td>{{ $o->payment_method }}</td><td class="num key">₱{{ number_format($o->total, 2) }}</td>
-          <td><a href="{{ route('staff.receipt', $o) }}">View</a></td>
-        </tr>
-      @endforeach
+    <div class="rp-scroll"><table class="rp-table fit-table mobile-card-table" id="txTable">
+      <thead>
+        <tr><th scope="col">Order #</th><th scope="col"><span class="lbl-long">Date / time</span><span class="lbl-short">Date</span></th><th scope="col">Items</th><th scope="col">Payment</th><th scope="col" class="num">Total</th><th></th></tr>
+      </thead>
+      <tbody>
+        @foreach ($orders->take(3) as $o)
+          <tr>
+            <td data-label="Order"><strong>#{{ $o->id }}</strong></td>
+            <td data-label="Date / time"><span class="d-date">{{ $o->created_at->format('M d, Y') }}</span><span class="d-time">{{ $o->created_at->format('g:i A') }}</span></td>
+            <td data-label="Items"><span class="items-text">{{ $o->items->map(fn ($i) => $i->qty . '× ' . $i->name)->implode(', ') }}</span></td>
+            <td data-label="Payment">{{ $o->payment_method }}</td>
+            <td data-label="Total" class="num key">₱{{ number_format($o->total, 2) }}</td>
+            <td data-label="Actions" class="row-actions"><a href="{{ route('staff.receipt', $o) }}">View</a></td>
+          </tr>
+        @endforeach
+      </tbody>
     </table></div>
     @if ($orders->isEmpty())<div class="empty">No transactions in this period.</div>@endif
     <p class="more"><a href="{{ route('staff.history') }}">View all orders &rarr;</a></p>
+  </div>
+
+  <h2 class="rp-sec">Deleted orders <small>{{ $deletedOrders->count() }} in this period</small></h2>
+  <div class="rp-card deleted-audit fit-card">
+    <h3>Deletion audit trail <small>Excluded from sales totals</small></h3>
+    @if ($deletedOrders->isEmpty())
+      <div class="empty">No deleted orders in this period.</div>
+    @else
+      <div class="rp-scroll">
+        <table class="rp-table fit-table deleted-table mobile-card-table">
+          <thead>
+            <tr>
+              <th scope="col">Order #</th>
+              <th scope="col"><span class="lbl-long">Date / time</span><span class="lbl-short">Date</span></th>
+              <th scope="col">Items</th>
+              <th scope="col">Payment</th>
+              <th scope="col" class="num">Total</th>
+              <th scope="col">Deleted by</th>
+              <th scope="col">Reason</th>
+              <th scope="col">Deleted at</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($deletedOrders as $o)
+              <tr class="is-deleted">
+                <td data-label="Order"><strong>#{{ $o->id }}</strong> <span class="badge bad">Deleted</span></td>
+                <td data-label="Date / time">{{ $o->created_at->format('M d, Y g:i A') }}</td>
+                <td data-label="Items">{{ $o->items->map(fn ($i) => $i->qty . '× ' . $i->name)->implode(', ') }}</td>
+                <td data-label="Payment">{{ $o->payment_method }}</td>
+                <td data-label="Total" class="num key">₱{{ number_format($o->total, 2) }}</td>
+                <td data-label="Deleted by">{{ $o->deleted_by_name ?: '—' }}</td>
+                <td data-label="Reason" class="deleted-reason">
+                  {{ $o->delete_reason ?: '—' }}
+                  @if ($o->edited_at)
+                    <small class="audit-note">Edited by {{ $o->edited_by_name ?: 'Staff' }}: {{ $o->edit_reason ?: '—' }}</small>
+                  @endif
+                </td>
+                <td data-label="Deleted at">{{ $o->deleted_at?->format('M d, Y g:i A') }}</td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    @endif
   </div>
   
   <div class="rp-downloads">

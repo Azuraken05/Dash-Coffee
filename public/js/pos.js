@@ -18,24 +18,6 @@ if (pay && ref) {
 }
 
 (function () {
-  var toggle = document.getElementById('posToggle');
-  var side = document.querySelector('.pos-side');
-  var backdrop = document.getElementById('posBackdrop');
-  if (!toggle || !side) return;
-
-  function setMenu(open) {
-    side.classList.toggle('open', open);
-    toggle.classList.toggle('open', open);
-    backdrop.classList.toggle('open', open);
-    toggle.setAttribute('aria-expanded', open);
-  }
-
-  toggle.addEventListener('click', function () { setMenu(!side.classList.contains('open')); });
-  backdrop.addEventListener('click', function () { setMenu(false); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
-})();
-
-(function () {
   var d = document.getElementById('clkDate'), t = document.getElementById('clkTime');
   if (!d || !t) return;
   function tick() {
@@ -47,4 +29,43 @@ if (pay && ref) {
   setInterval(tick, 1000);
 })();
 
+// QR Payment Modal
+(function () {
+    var form = document.getElementById('orderForm');
+    var pay = document.getElementById('payMethod');
+    var modal = document.getElementById('qrPaymentModal');
+    var title = document.getElementById('qrPaymentTitle');
+    var totalDisplay = document.getElementById('qrPaymentTotal');
+    var receivedBtn = document.getElementById('paymentReceived');
+    var closeBtn = document.getElementById('qrClose');
+    var cartTotal = document.getElementById('cartTotal');
 
+    if (!form || !pay || !modal || !receivedBtn) return;
+
+    var paymentConfirmed = false;
+
+    form.addEventListener('submit', function (e) {
+        if (pay.value === 'Cash' || paymentConfirmed) {
+            return;
+        }
+
+        e.preventDefault();
+
+        title.textContent = 'Pay using ' + pay.value;
+        totalDisplay.textContent = cartTotal ? cartTotal.textContent : '₱0.00';
+
+        modal.hidden = false;
+    });
+
+    receivedBtn.addEventListener('click', function () {
+        paymentConfirmed = true;
+        modal.hidden = true;
+        form.requestSubmit();
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+            modal.hidden = true;
+        });
+    }
+})();

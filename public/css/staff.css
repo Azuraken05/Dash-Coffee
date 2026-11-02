@@ -277,3 +277,251 @@
   animation: welcomeOut 1.4s ease 4s forwards;
 }
 
+/* =====================================================================
+   ORDER CARDS  (phones / small tablets)
+   Shared by Dashboard -> "Recent orders" and Order History.
+   Markup: resources/views/staff/_order_cards.blade.php
+   At 900px and below the table is hidden and these cards take over.
+   ===================================================================== */
+
+/* Desktop: the cards are never shown (the normal table is used) */
+.ord-cards {
+    display: none;
+}
+
+@media screen and (max-width: 900px) {
+    .ord-desktop {
+        display: none !important;
+    }
+
+    .ord-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+        gap: 12px;
+        align-items: start;
+    }
+}
+
+/* ---------- card ---------- */
+.ord-card {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #c9d9c3;
+    border-radius: 18px;
+    background: #f1f7ee;
+    color: #0f1a12;
+}
+
+.ord-card > div {
+    min-width: 0;
+}
+
+.ord-card[data-href] {
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ord-card[data-href]:hover {
+    border-color: #4fb34a;
+    box-shadow: 0 6px 16px rgba(47, 107, 58, 0.16);
+}
+
+.ord-card.is-deleted {
+    border-color: #efc4c0;
+    background: #fff5f4;
+}
+
+/* two columns: Order | Status  and  Total | Via */
+.ord-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+}
+
+.ord-pair > div {
+    min-width: 0;
+}
+
+/* ---------- label + value ---------- */
+.ord-lbl {
+    display: block;
+    margin-bottom: 3px;
+    color: #2f6b3a;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.ord-val {
+    color: #0f1a12;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.ord-id {
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.ord-money {
+    color: #14531f;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.ord-card.is-deleted .ord-money {
+    color: #8e211d;
+    text-decoration: line-through;
+}
+
+.ord-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.ord-card .badge.available {
+    background: #bfe3b8;
+    color: #14531f;
+}
+
+/* ---------- edit / delete audit notes ---------- */
+.ord-note {
+    padding: 8px 10px;
+    border-left: 3px solid #e0b24d;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.75);
+    color: #4c5a4f;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.ord-note.del {
+    border-left-color: #d9484e;
+    color: #7a2a24;
+}
+
+.ord-note em {
+    display: block;
+    margin-top: 2px;
+    color: #7a3d00;
+    font-style: italic;
+}
+
+.ord-note.del em {
+    color: #7a2a24;
+}
+
+/* ---------- actions: a real grid, so the words never get squeezed ---------- */
+.ord-foot {
+    display: grid;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px dashed #b9d0b0;
+}
+
+.ord-card.is-deleted .ord-foot {
+    border-top-color: #e6b8b3;
+}
+
+.ord-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.ord-card .ord-act {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    margin: 0;
+    padding: 0 10px;
+    border: 1px solid #a9c4a0;
+    border-radius: 999px;
+    background: #dce8d6;
+    color: #14231a;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: background 0.2s ease;
+}
+
+.ord-card .ord-act:hover {
+    background: #cde0c5;
+}
+
+.ord-card .ord-act:focus-visible {
+    outline: 3px solid rgba(79, 179, 74, 0.45);
+    outline-offset: 2px;
+}
+
+.ord-card .ord-act.danger {
+    border-color: #d9484e;
+    background: #d9484e;
+    color: #fff;
+}
+
+.ord-card .ord-act.danger:hover {
+    background: #c63840;
+}
+
+/* a lone button (Dashboard "View", or a deleted order) = full width */
+.ord-actions > .ord-act:only-child {
+    grid-column: 1 / -1;
+}
+
+@media screen and (max-width: 520px) {
+    /* if there are 3 buttons, the odd one takes the whole last row */
+    .ord-actions > .ord-act:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
+}
+
+@media screen and (min-width: 521px) {
+    /* wider screens: all four buttons in one row */
+    .ord-actions {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+/* ---------- empty state ---------- */
+.ord-empty {
+    grid-column: 1 / -1;
+    padding: 26px 14px;
+    border: 1.5px dashed #c2d6ba;
+    border-radius: 14px;
+    background: #fbfdf9;
+    color: #6f8274;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ord-card[data-href],
+    .ord-card .ord-act {
+        transition: none;
+    }
+}
+

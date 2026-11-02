@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\StaffController;
 use App\Http\Middleware\OwnerOnly;
@@ -29,7 +30,7 @@ use App\Http\Controllers\FeedbackController;
 | Public pages (customers can see these)
 |--------------------------------------------------------------------------
 */
-Route::view('/', 'homepage')->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/about', 'about')->name('about');
 Route::view('/menu', 'menu')->name('menu');
 Route::view('/contact', 'contact')->name('contact');
@@ -61,7 +62,10 @@ Route::middleware('auth')->prefix('staff')->group(function () {
     Route::get('/orders', [OrderController::class, 'create'])->name('staff.orders');
     Route::post('/orders', [OrderController::class, 'store'])->name('staff.orders.store');
     Route::get('/orders/history', [OrderController::class, 'history'])->name('staff.history');
-    Route::get('/orders/{order}', [OrderController::class, 'receipt'])->name('staff.receipt');
+    Route::get('/orders/{order}', [OrderController::class, 'receipt'])->withTrashed()->name('staff.receipt');
+    Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('staff.orders.edit');
+    Route::put('/orders/{order}', [OrderController::class, 'update'])->name('staff.orders.update');
+    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('staff.orders.destroy');
 
     Route::get('/inventory', [InventoryController::class, 'index'])->name('staff.inventory');
     Route::post('/inventory', [InventoryController::class, 'store'])->name('staff.inventory.store');
