@@ -6,14 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>@yield('title', 'Staff') | DashCoffee</title>
-      <link rel="icon" type="image/png" href="{{ asset('assets/dashcoffeelogo.png') }}" />
+  <link rel="icon" type="image/png" href="{{ asset('assets/dashcoffeelogo.png') }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/staff.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/pos.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/mobile.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/mobile-card.css') }}" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <style>
@@ -22,11 +22,35 @@
                   margin:0 !important; transform:none !important; z-index:1001 !important; }
     .pos-toggle:not(.open):not([aria-expanded="true"]) { left:16px !important; }
   </style>
-
-</style>
 </head>
 
 <body class="staff-body">
+  {{-- Auto log out when the tab was closed (or the page is opened in a new tab) --}}
+  @auth
+    <form id="autoLogout" method="POST" action="{{ route('logout') }}" style="display:none">
+      @csrf
+    </form>
+    <script>
+      (function () {
+        var KEY = 'dashcoffee_staff_tab';
+        try {
+          @if (session('just_logged_in'))
+            // Just logged in from this tab — mark it as an active staff tab
+            sessionStorage.setItem(KEY, '1');
+          @endif
+
+          // No marker = this tab was closed and reopened, or is a new tab → log out
+          if (!sessionStorage.getItem(KEY)) {
+            document.getElementById('autoLogout').submit();
+          }
+        } catch (e) {
+          // Storage blocked: log out to be safe
+          document.getElementById('autoLogout').submit();
+        }
+      })();
+    </script>
+  @endauth
+
   @if (session('just_logged_in'))
     <div class="welcome-overlay">
       <div class="welcome-box">
