@@ -9,7 +9,7 @@
       @forelse ($products as $p)
         <div class="prod-row">
           <div class="prod-info">
-            <img class="prod-thumb" src="{{ $p->image ? asset($p->image) : asset('assets/dashcoffee-logo.jpg') }}" alt="{{ $p->name }}" />
+            <img class="prod-thumb" src="{{ $p->image ? \Illuminate\Support\Facades\Storage::disk('s3')->url($p->image) : asset('assets/dashcoffee-logo.jpg') }}" alt="{{ $p->name }}" />
             <div><strong>{{ $p->name }}</strong><small>{{ $p->category }} · ₱{{ number_format($p->price, 2) }}</small></div>
           </div>
           <span class="badge {{ $p->displayStatus() }}">{{ ['available' => 'Available', 'out_of_stock' => 'Out of Stock', 'hidden' => 'Hidden'][$p->displayStatus()] }}</span>
@@ -36,7 +36,7 @@
       <form method="POST" action="{{ route('staff.menu.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="fields">
-                    <label>Product picture <span class="req">*</span></label>
+          <label>Product picture <span class="req">*</span></label>
           <div class="img-pick">
             <img id="imgPrev" src="{{ asset('assets/dashcoffee-logo.jpg') }}" alt="Preview" />
             <div class="img-meta">
@@ -48,8 +48,12 @@
           </div>
           <label>Product name</label><input type="text" name="name" value="{{ old('name') }}" required />
           <label>Category <small>(type a new one or pick from the list)</small></label>
-          <input type="text" name="category" list="catList" value="{{ old('category') }}" placeholder="e.g. Foods, Beverages, Pastries" autocomplete="off" required />
-          <datalist id="catList">@foreach ($categories as $c)<option value="{{ $c }}">@endforeach</datalist>
+          <input type="text" name="category" list="catList" value="{{ old('category') }}" placeholder="e.g. Foods, Beverages, Pastries" required />
+          <datalist id="catList">
+            @foreach ($categories as $c)
+              <option value="{{ $c }}">{{ $c }}</option>
+            @endforeach
+          </datalist>
           <label>Price</label><input type="number" name="price" step="0.01" min="0" value="{{ old('price') }}" required />
           <label>Status</label>
           <select name="status"><option value="available">Available</option><option value="out_of_stock">Out of Stock</option><option value="hidden">Hidden</option></select>
@@ -90,7 +94,7 @@
       e.target.setCustomValidity(v && !hit ? 'Pick an ingredient from the list (add it in Inventory first).' : '');
     });
 
-        document.getElementById('imgIn').addEventListener('change', function () {
+    document.getElementById('imgIn').addEventListener('change', function () {
       var f = this.files[0];
       if (f) {
         document.getElementById('imgPrev').src = URL.createObjectURL(f);

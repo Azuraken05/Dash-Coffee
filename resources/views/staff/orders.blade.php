@@ -29,7 +29,8 @@
                     <button type="button" class="prod-tile {{ $ok ? '' : 'off' }}" @disabled(!$ok)
                         data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-price="{{ $p->price }}"
                         data-cat="{{ $p->category }}">
-                        <img class="tile-img" src="{{ $p->image ? asset($p->image) : asset('assets/dashcoffee-logo.jpg') }}"
+                        <!-- Updated: Image now loads from S3 Cloud Storage -->
+                        <img class="tile-img" src="{{ $p->image ? \Illuminate\Support\Facades\Storage::disk('s3')->url($p->image) : asset('assets/dashcoffee-logo.jpg') }}"
                             alt="{{ $p->name }}" />
                         <strong>{{ $p->name }}</strong>
                         <span>₱{{ number_format($p->price, 2) }}</span>
