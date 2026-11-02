@@ -30,4 +30,16 @@ class Product extends Model
         if ($this->status === 'out_of_stock' || ! $this->canMake()) return 'out_of_stock';
         return 'available';
     }
+
+    // Full web address of the product picture (null if none)
+public function getImageUrlAttribute(): ?string
+{
+    if (! $this->image) return null;
+    if (preg_match('#^https?://#i', $this->image)) return $this->image;
+
+    $path = ltrim($this->image, '/');
+    if (file_exists(public_path($path))) return asset($path);
+
+    return asset('storage/' . preg_replace('#^storage/#', '', $path));
+}
 }

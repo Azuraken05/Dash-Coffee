@@ -117,12 +117,21 @@
     min-height: 0;
     padding: 10px 10px 12px;
   }
-  .product-card > :first-child:not(h3) {
+  .product-card .product-badge {
     min-height: 0;
     height: auto;
     padding: 4px 10px;
     font-size: 0.66rem;
     line-height: 1.2;
+  }
+  .product-card-img {
+    height: 90px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+  }
+  .hero-card-img {
+    height: 120px;
+    margin-bottom: 12px;
   }
   .product-card h3 {
     margin: 8px 0 0;
@@ -587,8 +596,30 @@
   .menu-card-price {
     font-size: 0.85rem;
   }
+  /* Why DashCoffee: keep the three cards in one straight row and still show the subtitle (small text) */
+  .value-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .value-card {
+    padding: 12px 6px;
+  }
+  .value-card h3 {
+    font-size: 0.8rem;
+  }
   .value-card p {
-    display: none;
+    display: block;
+    font-size: 0.62rem;
+    line-height: 1.35;
+    text-align: center;
+    text-wrap: balance;      /* even line lengths, no cut-up words */
+    overflow-wrap: break-word;
+    hyphens: none;
+  }
+  .value-icon {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 6px;
   }
   .inv-card small {
     font-size: 0.5rem;
@@ -2618,44 +2649,8 @@
   }
 }
 
-@view-transition {
-  navigation: auto;
-}
-
-.pos .pos-side {
-  view-transition-name: pos-side;
-}
-.pos .pos-toggle {
-  view-transition-name: pos-toggle;
-}
-
-::view-transition-group(pos-side),
-::view-transition-group(pos-toggle) {
-  animation: none;
-}
-::view-transition-old(pos-side),
-::view-transition-old(pos-toggle) {
-  display: none;
-}
-::view-transition-new(pos-side),
-::view-transition-new(pos-toggle) {
-  animation: none;
-}
-
-/* the page content: a quick, soft cross-fade */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 80ms;
-  animation-timing-function: ease-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  @view-transition {
-    navigation: none;
-  }
-}
 /* =====================================================================
-   ORDER AUDIT — mobile card layout
+   ORDER AUDIT ï¿½ mobile card layout
    ===================================================================== */
 @media (max-width: 768px) {
   /* The status area now carries audit text, so let it use the full card width

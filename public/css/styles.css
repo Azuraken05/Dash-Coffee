@@ -980,7 +980,6 @@ p {
   background: var(--primary-green);
 }
 
-/* Hero: plays when the page loads */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1000,7 +999,6 @@ p {
   animation: fadeUp 0.9s ease 0.5s forwards;
 }
 
-/* Everything else: plays when scrolled into view */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
@@ -1035,13 +1033,10 @@ body:not(.staff-body) {
     animation:fadeUp 0.7s ease;
 }
 
-/* Hidden image na lalabas pag hover */
 .menu-card {
     position: relative;
 }
 
-/* Nakadikit sa taas ng card, hindi tutulak ng layout */
-/* Container: laging nandiyan, walang opacity/clip na */
 .menu-card-hover-image {
     position: absolute;
     left: -1px;
@@ -1057,7 +1052,6 @@ body:not(.staff-body) {
     z-index: 20;
 }
 
-/* Image: nakatago muna, aangat at magfa-fade pagkatapos ng text */
 .menu-card-hover-image img {
     width: 100%;
     height: 100%;
@@ -1491,25 +1485,6 @@ body:not(.staff-body) {
     transform: translateY(var(--popup-shift));
 }
 
-/* =====================================================================
-   MENU CARDS — kulay ng card = kulay ng produkto
-   ---------------------------------------------------------------------
-   IDAGDAG SA PINAKA-DULO ng public/css/styles.css (para ma-override ang
-   green). Walang babaguhin sa menu.blade.php.
-
-   Paano gumagana:
-   1. Bawat produkto ay may iisang kulay (--tint) = kulay ng drink/food
-      sa picture nya.
-   2. Ang gradient ng card (taas -> baba) ay kinukuha sa kulay na iyon,
-      pinalabnaw ng puti (38% sa taas, 11% sa baba) — ito ang formula na
-      tugma sa Choco Muffy na reference ng leader.
-   3. Hinahanap ng CSS ang card base sa filename ng image nito.
-
-   Gusto mong palitan ang kulay ng isang item? Hanapin ang pangalan nya sa
-   ibaba at palitan lang ang hex code. (Kailangan ng modern browser:
-   Chrome/Edge 111+, Safari 16.4+, Firefox 121+.)
-   ===================================================================== */
-
 .menu-grid .menu-card,
 .menu-grid .menu-card:hover,
 .menu-grid .menu-card:focus-visible,
@@ -1520,8 +1495,6 @@ body:not(.staff-body) {
         color-mix(in srgb, var(--tint, #d9dfd9) 11%, #fff) 100%
     );
 }
-
-/* ---------- Kulay ng bawat produkto ---------- */
 
 /* Iced Coffee */
 .menu-card:has([src*="iced-coffee/dash-latte."])              { --tint: #D49B5E; } /* Dash Latte */
@@ -1592,3 +1565,90 @@ body:not(.staff-body) {
 .menu-card:has([src*="snacks/siomai-rice."])                  { --tint: #EDB06B; } /* Siomai Rice */
 .menu-card:has([src*="snacks/gyoza."])                        { --tint: #D9A05B; } /* Gyoza */
 .menu-card:has([src*="snacks/waffle."])                       { --tint: #E0B068; } /* Waffle */
+
+
+/* Product pictures on the homepage (signature card + featured cards) */
+.hero-card-img,
+.product-card-img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+.hero-card-img {
+  height: 140px;
+  margin-bottom: 16px;
+}
+.product-card-img {
+  height: 150px;
+  margin-bottom: 14px;
+}
+
+/* Footer pop-ups: Privacy Policy / Terms */
+.legal-dialog {
+  width: min(92vw, 560px);
+  max-height: 80vh;
+  padding: 28px 26px 24px;
+  border: 0;
+  border-radius: 20px;
+  background: #fff;
+  color: #1c2a20;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+}
+.legal-dialog::backdrop {
+  background: rgba(20, 30, 24, 0.55);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+.legal-dialog h2 {
+  margin: 0 0 4px;
+  font-size: 1.4rem;
+}
+.legal-dialog h3 {
+  margin: 18px 0 4px;
+  font-size: 1rem;
+  color: #2f6b3a;
+}
+.legal-dialog p,
+.legal-dialog li {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #44504a;
+}
+.legal-dialog ul {
+  margin: 6px 0 0;
+  padding-left: 20px;
+}
+.legal-dialog .legal-updated {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  color: #7b867f;
+}
+.legal-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  margin: -8px -6px 0 0;
+}
+.legal-close button {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: #eef3ee;
+  color: #2f6b3a;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.legal-close button:hover {
+  background: #dfeadf;
+}
+
+/* Keep the Add-ons banner in its original position */
+.addon-banner,
+.addon-banner.is-shifted {
+    transform: none !important;
+    transition: none !important;
+}

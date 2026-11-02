@@ -2,7 +2,15 @@
 
 @section('title', 'DashCoffee | Your Daily Coffee Moment')
 
+{{--
+  $signature : the single best seller (a Product) or null
+  $featured  : a collection of the next best sellers (up to 6) or empty
+  When the controller sends nothing (no sales yet), the original static content below is shown.
+--}}
 @section('content')
+@php
+  $money = fn ($amount) => '₱' . number_format($amount, $amount == floor($amount) ? 0 : 2);
+@endphp
 <section class="hero" id="home">
         <div class="container hero-inner">
           <div class="hero-copy">
@@ -12,13 +20,25 @@
             <a class="btn btn-primary btn-large" href="{{ route('menu') }}">EXPLORE MENU</a>
           </div>
           <div class="hero-card" aria-label="DashCoffee highlight card">
+            @if (!empty($signature) && $signature->image_url)
+              <img class="hero-card-img" src="{{ $signature->image_url }}" alt="{{ $signature->name }}" loading="lazy">
+            @endif
             <div class="mini-tag">Signature pick</div>
-            <h3>Cloud Latte</h3>
-            <p>Velvety texture, balanced sweetness, and an airy finish.</p>
-            <div class="price-row">
-              <span>₱49</span>
-              <span>Perfect for your afternoon reset</span>
-            </div>
+            @if (!empty($signature))
+              <h3>{{ $signature->name }}</h3>
+              <p>Our most ordered pick from the {{ $signature->category }}.</p>
+              <div class="price-row">
+                <span>{{ $money($signature->price) }}</span>
+                <span>Our best seller</span>
+              </div>
+            @else
+              <h3>Cloud Latte</h3>
+              <p>Velvety texture, balanced sweetness, and an airy finish.</p>
+              <div class="price-row">
+                <span>₱49</span>
+                <span>Perfect for your afternoon reset</span>
+              </div>
+            @endif
           </div>
         </div>
       </section>
@@ -30,6 +50,18 @@
             <h2>Top picks from our everyday favorites.</h2>
           </div>
           <div class="featured-grid">
+            @if (!empty($featured) && $featured->isNotEmpty())
+              @foreach ($featured as $product)
+                <article class="product-card">
+                  @if ($product->image_url)
+                    <img class="product-card-img" src="{{ $product->image_url }}" alt="{{ $product->name }}" loading="lazy">
+                  @endif
+                  <div class="product-badge">{{ $product->badge ?: 'Popular' }}</div>
+                  <h3>{{ $product->name }}</h3>
+                  <p>{{ $product->category }} — {{ $money($product->price) }}</p>
+                </article>
+              @endforeach
+            @else
             <article class="product-card">
               <div class="product-badge">Limited time</div>
               <h3>Matcha Frappe</h3>
@@ -60,6 +92,7 @@
               <h3>Silog Meals</h3>
               <p>Tapsilog, Bangsilog, Porksilog — ₱79 - ₱99</p>
             </article>
+            @endif
           </div>
   <div class="section-cta">
             <a href="{{ route('menu') }}" class="btn btn-primary">VIEW FULL MENU</a>
