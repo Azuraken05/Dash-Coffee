@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ingredient;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage; // Added Storage facade for cloud uploads
 
 class MenuController extends Controller
 {
@@ -42,8 +43,9 @@ class MenuController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $name = uniqid('p_') . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/products'), $name);
-            $path = 'uploads/products/' . $name;
+            
+            // Uploads to Cloud Storage (S3/Supabase) instead of the local Vercel folder
+            $path = $file->storeAs('uploads/products', $name, 's3');
         }
 
         $product = Product::create([
@@ -74,9 +76,11 @@ class MenuController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->image && file_exists(public_path($product->image))) {
-            @unlink(public_path($product->image));
+        // Deletes the image from Cloud Storage before deleting the database record
+        if ($product->image && Storage::disk('s3')->exists($product->image)) {
+            Storage::disk('s3')->delete($product->image);
         }
+        
         $product->delete();
 
         return back()->with('ok', 'Product deleted.');
