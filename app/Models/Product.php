@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -32,14 +33,16 @@ class Product extends Model
     }
 
     // Full web address of the product picture (null if none)
-public function getImageUrlAttribute(): ?string
-{
-    if (! $this->image) return null;
-    if (preg_match('#^https?://#i', $this->image)) return $this->image;
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->image) return null;
 
-    $path = ltrim($this->image, '/');
-    if (file_exists(public_path($path))) return asset($path);
+        // Already a full link — use as is
+        if (preg_match('#^https?://#i', $this->image)) return $this->image;
 
-    return asset('storage/' . preg_replace('#^storage/#', '', $path));
-}
+        $path = ltrim($this->image, '/');
+
+        // Uploaded pictures live in the Supabase bucket
+        return Storage::disk('s3')->url($path);
+    }
 }
