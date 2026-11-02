@@ -1652,3 +1652,40 @@ body:not(.staff-body) {
     transform: none !important;
     transition: none !important;
 }
+
+/* ============================================================
+   Menu card pictures — fixes
+   ============================================================ */
+
+/* Food photos (snacks, silog): show the MIDDLE of the photo where the food is,
+   not the empty top. Drinks keep the original "top of the cup" look. */
+.menu-card-thumb[src*="snacks/"],
+.menu-card-thumb[src*="silog-menu/"] {
+    --thumb-zoom: 1.15;
+    object-position: center center;
+    transform-origin: 50% 50%;
+    clip-path: inset(calc((1 - 1 / var(--thumb-zoom)) * 50%));
+}
+
+/* Phones: taller cards so pictures have room, and text that never runs over the picture */
+@media (max-width: 720px) {
+    .menu-card {
+        min-height: 84px;
+        padding: 16px;
+    }
+
+    .menu-card-thumb {
+        width: 44%;
+        --thumb-zoom: 1.3;   /* less zoom on drinks so more of the cup shows */
+    }
+
+    .menu-card-top,
+    .menu-card-meta {
+        max-width: 56%;
+    }
+
+    .menu-card-meta {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
