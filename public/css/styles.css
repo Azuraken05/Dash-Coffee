@@ -1670,7 +1670,7 @@ body:not(.staff-body) {
 /* Phones: taller cards so pictures have room, and text that never runs over the picture */
 @media (max-width: 720px) {
     .menu-card {
-        min-height: 84px;
+        min-height: 83px;
         padding: 16px;
     }
 
